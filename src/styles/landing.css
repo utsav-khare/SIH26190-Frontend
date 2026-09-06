@@ -1,0 +1,452 @@
+/* ==========================================================================
+   Landing Page Specific Styles
+   ========================================================================== */
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(7, 13, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 16px 0;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo-icon {
+  width: 42px;
+  height: 42px;
+  background-color: var(--accent-gold);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b1320;
+  box-shadow: 0 0 16px var(--accent-gold-glow);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-white);
+  line-height: 1.1;
+}
+
+.brand-tagline {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-gold);
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 28px;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-gold);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-title {
+  font-size: 2.85rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-white);
+  letter-spacing: -0.03em;
+}
+
+.hero-subtitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-top: -4px;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--accent-gold);
+  margin: 6px 0;
+}
+
+.hero-divider::before, .hero-divider::after {
+  content: '';
+  height: 1px;
+  width: 40px;
+  background-color: var(--accent-gold);
+  opacity: 0.6;
+}
+
+.hero-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 540px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image-wrapper {
+  width: 100%;
+  max-width: 520px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  background-color: var(--bg-secondary);
+}
+
+.hero-scene-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Feature Pillars Grid (5 Cards) */
+.features-section {
+  padding: 60px 0;
+  background-color: var(--bg-primary);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.feature-card {
+  background-color: #0b1424;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all var(--transition-normal);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  background-color: #0e1a2f;
+}
+
+.feature-card-icon {
+  width: 52px;
+  height: 52px;
+  background-color: #050b15;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-white);
+  margin-bottom: 16px;
+}
+
+.feature-card:hover .feature-card-icon {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.feature-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 10px;
+}
+
+.feature-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Workflow Section (How Digilegal Vault Works) */
+.workflow-section {
+  padding: 80px 0;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: 12px;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--accent-gold);
+  margin: 0 auto 50px;
+}
+
+.section-divider::before, .section-divider::after {
+  content: '';
+  height: 1px;
+  width: 50px;
+  background-color: var(--accent-gold);
+  opacity: 0.6;
+}
+
+.workflow-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.workflow-steps::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: repeating-linear-gradient(to right, var(--border-dark), var(--border-dark) 8px, transparent 8px, transparent 16px);
+  z-index: 1;
+}
+
+.workflow-step-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 0 10px;
+}
+
+.workflow-step-node {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background-color: #070d18;
+  border: 2px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  color: var(--text-light);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition-normal);
+}
+
+.workflow-step-item:hover .workflow-step-node {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  transform: scale(1.08);
+}
+
+.workflow-step-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--accent-gold);
+  margin-bottom: 4px;
+}
+
+.workflow-step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 6px;
+}
+
+.workflow-step-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Security Section */
+.security-section {
+  padding: 80px 0;
+  background-color: var(--bg-primary);
+}
+
+.security-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.security-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.security-badge-box {
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  background-color: #070d18;
+}
+
+.security-pillars-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 28px;
+}
+
+.security-pillar-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.security-pillar-icon {
+  color: var(--accent-gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.security-pillar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 4px;
+}
+
+.security-pillar-desc {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Public Footer */
+.landing-footer {
+  border-top: 1px solid var(--border-dark);
+  padding: 30px 0;
+  background-color: var(--bg-secondary);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-subtle);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-grid, .security-grid {
+    grid-template-columns: 1fr;
+  }
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .workflow-steps {
+    flex-wrap: wrap;
+    gap: 30px 0;
+  }
+  .workflow-step-item {
+    flex: 0 0 33.33%;
+  }
+  .workflow-steps::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .workflow-step-item {
+    flex: 0 0 50%;
+  }
+  .security-pillars-list {
+    grid-template-columns: 1fr;
+  }
+  .nav-menu {
+    display: none;
+  }
+  .nav-toggle {
+    display: block;
+  }
+}
+
