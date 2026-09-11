@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   Briefcase,
@@ -9,28 +9,37 @@ import {
   FileCheck2,
   Settings,
   LogOut,
-  Shield
+  Shield,
+  AlertTriangle
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { hasPermission, PERMISSIONS } from '../../utils/permissions';
 
 export const Sidebar = () => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  const navItems = [
+  // Role-filtered navigation: each item declares required permission; if none, visible to all authenticated users
+  const allNavItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/cases', label: 'Cases', icon: Briefcase },
     { to: '/documents', label: 'Documents', icon: FileText },
     { to: '/search', label: 'Search', icon: Search },
-    { to: '/approvals', label: 'Approvals', icon: CheckCircle2, badge: 8 },
-    { to: '/audit-log', label: 'Audit Log', icon: FileCheck2 },
-    { to: '/settings', label: 'Settings', icon: Settings }
+    { to: '/approvals', label: 'Approvals', icon: CheckCircle2, badge: 8, permission: PERMISSIONS.APPROVE_DOCUMENT },
+    { to: '/audit-log', label: 'Audit Log', icon: FileCheck2, permission: PERMISSIONS.VIEW_AUDIT_LOG },
+    { to: '/settings', label: 'Settings', icon: Settings, permission: PERMISSIONS.MANAGE_USERS }
   ];
+
+  const navItems = allNavItems.filter((item) => {
+    if (!item.permission) return true;
+    return hasPermission(user?.role, item.permission);
+  });
 
   return (
     <aside className="sidebar">
@@ -54,9 +63,10 @@ export const Sidebar = () => {
             <NavLink
               key={item.to}
               to={item.to}
-              className={({ isActive }) =>
-                `sidebar-item ${isActive ? 'active' : ''}`
-              }
+              className={({ isActive }) => {
+                const isCurrent = isActive || (item.to === '/cases' && location.pathname.startsWith('/cases'));
+                return `sidebar-item ${isCurrent ? 'active' : ''}`;
+              }}
             >
               <Icon size={18} className="sidebar-icon" />
               <span>{item.label}</span>

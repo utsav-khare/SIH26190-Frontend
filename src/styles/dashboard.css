@@ -1,5 +1,6 @@
 /* ==========================================================================
    Digilegal Vault - Dashboard Specific Styles (Pixel-Perfect Mockup Alignment)
+   SIH26190 Secure Digital Document Management System
    ========================================================================== */
 
 .dashboard-layout {
@@ -9,7 +10,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Sidebar
+   1. Sidebar
    -------------------------------------------------------------------------- */
 .sidebar {
   width: 250px;
@@ -138,7 +139,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Main Dashboard Wrapper
+   2. Main Wrapper & Topbar
    -------------------------------------------------------------------------- */
 .main-wrapper {
   flex: 1;
@@ -148,9 +149,6 @@
   background-color: var(--bg-primary);
 }
 
-/* --------------------------------------------------------------------------
-   Topbar
-   -------------------------------------------------------------------------- */
 .topbar {
   height: 68px;
   background-color: var(--bg-primary);
@@ -172,39 +170,6 @@
   color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
-}
-
-.topbar-notification-btn {
-  position: relative;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  transition: color var(--transition-fast);
-}
-
-.topbar-notification-btn:hover {
-  color: var(--text-white);
-}
-
-.notification-count {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  background-color: var(--accent-gold);
-  color: #0b1320;
-  font-size: 0.65rem;
-  font-weight: 800;
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .topbar-user {
@@ -251,7 +216,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Dashboard Body Content
+   3. Dashboard Content & Security Banner
    -------------------------------------------------------------------------- */
 .dashboard-content {
   padding: 24px 32px 36px;
@@ -260,9 +225,6 @@
   gap: 20px;
 }
 
-/* --------------------------------------------------------------------------
-   Welcome / Security Banner
-   -------------------------------------------------------------------------- */
 .security-banner {
   background-color: var(--bg-card-dark);
   border: 1px solid var(--border-dark);
@@ -352,7 +314,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4-Stat Metric Cards
+   4. Stat Metric Cards & Grid Layouts
    -------------------------------------------------------------------------- */
 .metrics-grid {
   display: grid;
@@ -412,9 +374,6 @@
   gap: 8px;
 }
 
-/* --------------------------------------------------------------------------
-   Two-Column Middle Grid
-   -------------------------------------------------------------------------- */
 .dashboard-grid-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -458,7 +417,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Recent Documents List
+   5. Recent Documents & Badges
    -------------------------------------------------------------------------- */
 .recent-docs-list {
   display: flex;
@@ -559,8 +518,12 @@
   color: var(--text-white);
 }
 
+.table-row-hover:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 /* --------------------------------------------------------------------------
-   Activity Timeline with Connected Vertical Line
+   6. Activity Timeline with Connected Vertical Line
    -------------------------------------------------------------------------- */
 .activity-timeline {
   display: flex;
@@ -654,7 +617,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Bottom Quick Actions Bar (Single Wide Card Container)
+   7. Bottom Quick Actions Bar
    -------------------------------------------------------------------------- */
 .quick-actions-bar {
   background-color: var(--bg-card-dark);
@@ -708,7 +671,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   STEP 3: Page Headers, Stat Variants, Tabs, Pills, Pagination
+   8. Page Headers, Cases Stats, Filters, Tabs, Status Pills, Pagination
    -------------------------------------------------------------------------- */
 .page-header-row {
   display: flex;
@@ -730,7 +693,6 @@
   color: var(--text-muted);
 }
 
-/* Cases stat cards with trend icon */
 .case-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -798,7 +760,6 @@
   color: var(--text-muted);
 }
 
-/* Filter toolbar */
 .filter-toolbar {
   background-color: var(--bg-card-dark);
   border: 1px solid var(--border-dark);
@@ -847,7 +808,6 @@
   color: var(--text-subtle);
 }
 
-/* Status pills (cases & approvals) */
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -894,7 +854,6 @@
   color: #f87171;
 }
 
-/* Tabs with counts (Approvals) */
 .approval-tabs {
   display: flex;
   gap: 8px;
@@ -944,7 +903,6 @@
   background-color: rgba(11, 19, 32, 0.25);
 }
 
-/* Small action pills for Approvals rows */
 .approval-action-btn {
   display: inline-flex;
   align-items: center;
@@ -978,7 +936,6 @@
   background-color: rgba(239, 68, 68, 0.22);
 }
 
-/* Pagination */
 .pagination-bar {
   display: flex;
   justify-content: space-between;
@@ -1034,7 +991,571 @@
 }
 
 /* --------------------------------------------------------------------------
-   Responsive
+   9. Case Detail Page Styles
+   -------------------------------------------------------------------------- */
+.case-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.case-detail-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.case-detail-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-white);
+  line-height: 1.2;
+}
+
+.case-detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.breadcrumb-link {
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-link:hover {
+  color: var(--accent-gold);
+}
+
+.breadcrumb-sep {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.breadcrumb-current {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.case-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.case-summary-card {
+  background-color: var(--bg-card-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.case-summary-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background-color: #14223f;
+  border: 1px solid #223864;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.case-summary-meta-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 24px;
+  flex: 1;
+}
+
+.case-summary-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.case-summary-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.case-summary-code {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+  margin: 2px 0 6px;
+}
+
+.case-summary-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(34, 197, 94, 0.15);
+  color: var(--text-success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  width: fit-content;
+}
+
+.case-summary-sublabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  display: block;
+}
+
+.case-summary-val-bold {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-white);
+  display: block;
+  margin-top: 2px;
+}
+
+.case-summary-val {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.case-priority-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.priority-medium {
+  background-color: rgba(204, 162, 69, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(204, 162, 69, 0.3);
+}
+
+.priority-high, .priority-critical {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--text-error);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.priority-low {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.case-detail-grid-2col {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+.case-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.case-card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.04em;
+}
+
+.case-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.case-field-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 0.875rem;
+}
+
+.case-field-label {
+  width: 130px;
+  color: #64748b;
+  flex-shrink: 0;
+  font-size: 0.825rem;
+  font-weight: 500;
+}
+
+.case-field-val {
+  color: var(--text-white);
+  flex: 1;
+}
+
+.case-title-val {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.case-desc-val {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.case-tags-wrapper {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.case-tag-pill {
+  background-color: #14223f;
+  border: 1px solid #223864;
+  color: var(--accent-gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.officer-profile-layout {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.officer-avatar-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: #162544;
+  border: 1px solid #223864;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.officer-identity-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.officer-name-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.officer-role-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.officer-dept-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.officer-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+}
+
+.officer-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.officer-detail-label {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.officer-detail-val {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.officer-contact-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.officer-contact-link {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.case-timeline-horizontal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  padding: 10px 24px;
+}
+
+.timeline-h-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  text-align: center;
+}
+
+.timeline-connector-line {
+  position: absolute;
+  top: 16px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--border-dark);
+  z-index: 1;
+}
+
+.timeline-h-node {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 8px;
+}
+
+.node-gold {
+  background-color: #332408;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.node-blue {
+  background-color: #102445;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+}
+
+.node-green {
+  background-color: #0b2b1d;
+  border: 1px solid var(--text-success);
+  color: var(--text-success);
+}
+
+.timeline-h-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeline-h-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.timeline-h-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.timeline-h-by {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.case-docs-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.case-docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.case-docs-table thead tr {
+  border-bottom: 1px solid var(--border-dark);
+  color: #64748b;
+  background-color: rgba(11, 19, 32, 0.6);
+}
+
+.case-docs-table th {
+  padding: 12px 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.case-doc-row {
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.case-doc-row:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.case-doc-row td {
+  padding: 12px 20px;
+}
+
+.case-doc-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.case-doc-name-text {
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+.case-doc-type-text {
+  color: var(--text-muted);
+}
+
+.case-doc-date-text {
+  color: var(--text-muted);
+}
+
+.case-doc-by-text {
+  color: #64748b;
+}
+
+.case-doc-actions-wrap {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   10. Officer Profile Dropdown Popup Card
+   -------------------------------------------------------------------------- */
+.officer-profile-dropdown-card {
+  position: absolute;
+  right: 0;
+  top: 54px;
+  width: 290px;
+  background-color: #0b1329;
+  border: 1px solid var(--accent-gold);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.officer-profile-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(204, 162, 69, 0.2);
+}
+
+.officer-profile-avatar-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-gold);
+  background-color: #14223f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.officer-profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.officer-profile-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-white);
+  line-height: 1.2;
+}
+
+.officer-profile-email {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.officer-profile-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.officer-profile-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meta-gold-icon {
+  color: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.meta-label {
+  font-size: 0.72rem;
+  color: #64748b;
+  display: block;
+}
+
+.meta-val {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive Styles
    -------------------------------------------------------------------------- */
 @media (max-width: 1200px) {
   .metrics-grid {
@@ -1045,6 +1566,12 @@
   }
   .dashboard-grid-2col {
     grid-template-columns: 1fr;
+  }
+  .case-detail-grid-2col {
+    grid-template-columns: 1fr;
+  }
+  .case-summary-meta-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1063,6 +1590,13 @@
   }
   .case-stats-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .case-timeline-horizontal {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .timeline-connector-line {
+    display: none;
   }
 }
 

@@ -16,6 +16,10 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       return res;
     } finally {
+      // Step 13 fix — reset on BOTH success and failure. Previously `loading`
+      // stayed true after a successful login, permanently disabling the login
+      // button on the next logout -> login-again cycle (AuthProvider never
+      // unmounts, so the stale state persisted for the whole app session).
       setLoading(false);
     }
   };

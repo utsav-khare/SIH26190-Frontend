@@ -1,0 +1,116 @@
+
+> sih26190-digilegal-vault@1.0.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 8 modules transformed.
+[31mx[39m Build failed in 187ms
+[31merror during build:
+[31m[vite:esbuild] Transform failed with 11 errors:
+C:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:66:8: ERROR: The symbol "handleUploaded" has already been declared
+C:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:102:8: ERROR: The symbol "canDelete" has already been declared
+C:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:103:8: ERROR: The symbol "canEdit" has already been declared
+C:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:104:8: ERROR: The symbol "canDownload" has already been declared
+C:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:106:8: ERROR: The symbol "previewOpen" has already been declared
+...[31m
+file: [36mC:/Users/UTSAV KHARE/Documents/SIH26190/src/pages/DocumentsPage.jsx:66:8[31m
+[33m
+[33mThe symbol "handleUploaded" has already been declared[33m
+64 |    }, [fetchedDocs]);
+65 |  
+66 |    const handleUploaded = (newDoc) => {
+   |          ^
+67 |      const exists = docs.some((d) => d.id === newDoc?.id);
+68 |      if (!exists) setDocs((prev) => [newDoc, ...prev]);
+
+[33mThe symbol "canDelete" has already been declared[33m
+100|    };
+101|  
+102|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+   |          ^
+103|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+104|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+
+[33mThe symbol "canEdit" has already been declared[33m
+101|  
+102|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+103|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+   |          ^
+104|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+105|  
+
+[33mThe symbol "canDownload" has already been declared[33m
+102|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+103|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+104|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+   |          ^
+105|  
+106|    const previewOpen = useModal().openModal;
+
+[33mThe symbol "previewOpen" has already been declared[33m
+104|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+105|  
+106|    const previewOpen = useModal().openModal;
+   |          ^
+107|    const [previewOpenInstance] = useState(useModal());rmission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+108|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+
+[33mThe symbol "canEdit" has already been declared[33m
+106|    const previewOpen = useModal().openModal;
+107|    const [previewOpenInstance] = useState(useModal());rmission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+108|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+   |          ^
+109|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+110|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);ission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+
+[33mThe symbol "canDownload" has already been declared[33m
+107|    const [previewOpenInstance] = useState(useModal());rmission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+108|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+109|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+   |          ^
+110|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);ission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+111|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+
+[33mThe symbol "canDelete" has already been declared[33m
+108|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+109|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+110|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);ission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+   |          ^
+111|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+112|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+
+[33mThe symbol "canEdit" has already been declared[33m
+109|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+110|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);ission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+111|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+   |          ^
+112|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+113|  return (
+
+[33mThe symbol "canDownload" has already been declared[33m
+110|    const canDelete = hasPermission(user?.role, PERMISSIONS.DELETE_DOCUMENT);ission(user?.role, PERMISSIONS.DELETE_DOCUMENT);
+111|    const canEdit = hasPermission(user?.role, PERMISSIONS.EDIT_DOCUMENT);
+112|    const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+   |          ^
+113|  return (
+114|      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+[33mUnterminated regular expression[33m
+197|              message="Try adjusting your search or upload a new document."
+198|            />
+199|          </div>
+   |                ^
+200|        ) : (
+201|          <div className="section-box" style={{ padding: 0, overflow: 'hidden' }}>
+[31m
+    at failureErrorWithLog (c:\Users\UTSAV KHARE\Documents\SIH26190\node_modules\esbuild\lib\main.js:1472:15)
+    at c:\Users\UTSAV KHARE\Documents\SIH26190\node_modules\esbuild\lib\main.js:755:50
+    at responseCallbacks.<computed> (c:\Users\UTSAV KHARE\Documents\SIH26190\node_modules\esbuild\lib\main.js:622:9)
+    at handleIncomingPacket (c:\Users\UTSAV KHARE\Documents\SIH26190\node_modules\esbuild\lib\main.js:677:12)
+    at Socket.readFromStdout (c:\Users\UTSAV KHARE\Documents\SIH26190\node_modules\esbuild\lib\main.js:600:7)
+    at Socket.emit (node:events:509:20)
+    at addChunk (node:internal/streams/readable:568:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:519:3)
+    at Readable.push (node:internal/streams/readable:399:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)[39m

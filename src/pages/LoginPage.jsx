@@ -122,9 +122,10 @@ export const LoginPage = () => {
 
           {/* Mock Credentials Box */}
           <div className="mock-credentials-box">
-            <strong>Demo Mock Credentials:</strong><br />
-            Email: <code>attorney@firm.com</code><br />
-            Password: <code>vault2026</code>
+            <strong>Demo Mock Credentials (password: <code>vault2026</code>):</strong><br />
+            Admin — <code>admin@firm.com</code><br />
+            Officer — <code>officer@firm.com</code> / <code>attorney@firm.com</code><br />
+            Attorney — <code>advocate@firm.com</code>
           </div>
         </div>
 

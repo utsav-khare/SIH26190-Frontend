@@ -1,0 +1,3 @@
+CHECK_URL: http://localhost:3000
+STATUS: 200
+TITLE: Digilegal Vault â?? Secure Digital Document Management System

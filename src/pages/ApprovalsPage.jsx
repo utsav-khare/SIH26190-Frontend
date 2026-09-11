@@ -1,21 +1,54 @@
-import React, { useState } from 'react';
-import { CheckCircle2, XCircle, ChevronLeft, ChevronRight, Download, Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle2, XCircle, ChevronLeft, ChevronRight, Download, Search, AlertCircle } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
-import { MOCK_APPROVALS } from '../utils/constants';
+import { approvalService } from '../services/approvalService';
+import { useAuth } from '../hooks/useAuth';
+import { useApiData } from '../hooks/useApiData';
+import { LoadingState } from '../components/common/LoadingState';
+import { EmptyState } from '../components/common/EmptyState';
+import { ErrorState } from '../components/common/ErrorState';
+import { hasPermission, PERMISSIONS } from '../utils/permissions';
 
 const ITEMS_PER_PAGE = 7;
 
 const TABS = ['All Requests', 'Pending', 'Approved', 'Denied'];
 
 export const ApprovalsPage = () => {
-  const [approvals, setApprovals] = useState(MOCK_APPROVALS);
+  const { user } = useAuth();
+  const canApprove = hasPermission(user?.role, PERMISSIONS.APPROVE_DOCUMENT);
+  const [approvals, setApprovals] = useState([]);
   const [activeTab, setActiveTab] = useState('All Requests');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleAction = (id, action) => {
+  // Step 12 — approvals come from the service layer (mock store until the
+  // /approvals backend endpoint is available)
+  const { data, loading: approvalsLoading, error: approvalsError, reload: loadApprovals } = useApiData(
+    () => approvalService.getApprovals()
+  );
+
+  useEffect(() => {
+    if (Array.isArray(data)) setApprovals(data);
+  }, [data]);
+
+  const handleAction = async (id, action) => {
+    if (!canApprove) {
+      alert('You do not have clearance to approve or deny document requests.');
+      return;
+    }
+    // Optimistic update — rolled back if the service call fails
+    const previous = approvals;
     setApprovals((prev) => prev.map((a) => (a.id === id ? { ...a, status: action } : a)));
+    try {
+      const updated = await approvalService.decideApproval(id, action);
+      if (updated) {
+        setApprovals((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
+      }
+    } catch (err) {
+      setApprovals(previous);
+      alert(err.message || 'Failed to record the authorization decision.');
+    }
   };
 
   const counts = {
@@ -102,7 +135,24 @@ export const ApprovalsPage = () => {
         />
       </div>
 
+      {/* Step 12 — API states: loading / error / empty */}
+      {approvalsLoading && <LoadingState message="Retrieving authorization requests..." />}
+      {!approvalsLoading && approvalsError && (
+        <ErrorState
+          title="Approvals unavailable"
+          message={approvalsError}
+          onRetry={loadApprovals}
+        />
+      )}
+      {!approvalsLoading && !approvalsError && approvals.length === 0 && (
+        <EmptyState
+          title="No approval requests"
+          message="There are no clearance or document release requests awaiting review."
+        />
+      )}
+
       {/* Approvals Table */}
+      {!approvalsLoading && !approvalsError && approvals.length > 0 && (
       <div className="section-box" style={{ padding: 0, overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
           <thead>
@@ -170,6 +220,8 @@ export const ApprovalsPage = () => {
           <div className="pagination-pages">{renderPageNumbers()}</div>
         </div>
       </div>
+      )}
+
     </div>
   );
 };

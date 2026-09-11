@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Search, SlidersHorizontal, ChevronRight, LayoutGrid, List } from 'lucide-react';
-import { MOCK_RECENT_DOCUMENTS, SUPPORTED_UPLOAD } from '../utils/constants';
+import { SUPPORTED_UPLOAD } from '../utils/constants';
 import { Badge } from '../components/common/Badge';
+import { documentService } from '../services/documentService';
+import { useApiData } from '../hooks/useApiData';
+import { LoadingState } from '../components/common/LoadingState';
+import { EmptyState } from '../components/common/EmptyState';
+import { ErrorState } from '../components/common/ErrorState';
 
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest First' },
@@ -16,18 +21,24 @@ export const SearchPage = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState('list');
 
-  const results = MOCK_RECENT_DOCUMENTS.filter((doc) => {
-    const matchesQuery = doc.name.toLowerCase().includes(query.toLowerCase()) ||
-                         doc.caseId.toLowerCase().includes(query.toLowerCase()) ||
-                         doc.uploadedBy.toLowerCase().includes(query.toLowerCase());
+  // Step 11 — consistent API state handling (loading / error / empty)
+  const { data, loading: searchLoading, error: searchError, reload: retrySearch } = useApiData(
+    () => documentService.getDocuments()
+  );
+  const docs = data || [];
+
+  const results = docs.filter((doc) => {
+    const matchesQuery = (doc.name || '').toLowerCase().includes(query.toLowerCase()) ||
+                         (doc.caseId || '').toLowerCase().includes(query.toLowerCase()) ||
+                         (doc.uploadedBy || '').toLowerCase().includes(query.toLowerCase());
     const matchesType = docType === 'ALL' || doc.type === docType;
     return matchesQuery && matchesType;
   }).sort((a, b) => {
     switch (sortBy) {
-      case 'oldest': return a.id.localeCompare(b.id);
-      case 'name': return a.name.localeCompare(b.name);
-      case 'case': return a.caseId.localeCompare(b.caseId);
-      default: return b.id.localeCompare(a.id);
+      case 'oldest': return (a.id || '').localeCompare(b.id || '');
+      case 'name': return (a.name || '').localeCompare(b.name || '');
+      case 'case': return (a.caseId || '').localeCompare(b.caseId || '');
+      default: return (b.id || '').localeCompare(a.id || '');
     }
   });
 
@@ -113,12 +124,15 @@ export const SearchPage = () => {
       </div>
 
       {/* Results */}
-      {results.length === 0 ? (
-        <div className="section-box" style={{ alignItems: 'center', padding: '40px' }}>
-          <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
-            No documents match "{query || 'your filters'}". Supported types: {SUPPORTED_UPLOAD.label}.
-          </p>
-        </div>
+      {searchLoading ? (
+        <LoadingState message="Searching the vault..." />
+      ) : searchError ? (
+        <ErrorState title="Search unavailable" message={searchError} onRetry={retrySearch} />
+      ) : results.length === 0 ? (
+        <EmptyState
+          title={'No documents match "' + (query || 'your filters') + '"'}
+          message={'Supported types: ' + SUPPORTED_UPLOAD.label + '. Adjust your keywords or filters and try again.'}
+        />
       ) : (
         <div
           style={

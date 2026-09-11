@@ -2,10 +2,45 @@ import React from 'react';
 import { Modal } from '../common/Modal';
 import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
-import { Download, ShieldCheck, FileText, Calendar, User, Hash } from 'lucide-react';
+import { Download, ShieldCheck, FileText, Calendar, User, Hash, AlertCircle } from 'lucide-react';
+import { documentService } from '../../services/documentService';
+import { useAuth } from '../../hooks/useAuth';
+import { hasPermission, PERMISSIONS } from '../../utils/permissions';
 
 export const DocumentPreviewModal = ({ isOpen, onClose, document: doc }) => {
+  const { user } = useAuth();
+  const canView = hasPermission(user?.role, PERMISSIONS.VIEW_DOCUMENT);
+  const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+
   if (!doc) return null;
+  if (!canView) {
+    return (
+      <Modal isOpen={isOpen} onClose={onClose} title="Access Restricted">
+        <div style={{ textAlign: 'center', padding: '24px 0' }}>
+          <AlertCircle size={48} color="#ef4444" style={{ margin: '0 auto 12px' }} />
+          <h4 style={{ color: '#fff', marginBottom: '6px' }}>Document Access Denied</h4>
+          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+            Your clearance level does not permit viewing this document.
+          </p>
+          <Button variant="outline" onClick={onClose} style={{ marginTop: '16px' }}>
+            Close
+          </Button>
+        </div>
+      </Modal>
+    );
+  }
+
+  const handleDownload = async () => {
+    // Step 13 — download routed through the service layer so real mode hits
+    // GET /api/documents/:id/file; mock mode returns a download descriptor.
+    try {
+      const file = await documentService.downloadDocument(doc.id);
+      alert('Downloading "' + (file.name || doc.name) + '" (' + (file.size || doc.size) + ') via secure channel.');
+    } catch (err) {
+      alert(err.message || 'Download failed. Please try again.');
+    }
+    onClose();
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Secure Document Inspection" maxWidth="640px">
@@ -108,16 +143,11 @@ export const DocumentPreviewModal = ({ isOpen, onClose, document: doc }) => {
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            icon={Download}
-            onClick={() => {
-              alert(`Downloading encrypted copy of "${doc.name}" with legal chain-of-custody watermark.`);
-              onClose();
-            }}
-          >
-            Download Verified File
-          </Button>
+          {canDownload && (
+            <Button variant="primary" icon={Download} onClick={handleDownload}>
+              Download Verified File
+            </Button>
+          )}
         </div>
       </div>
     </Modal>

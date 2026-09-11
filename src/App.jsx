@@ -8,6 +8,7 @@ import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { SetNewPasswordPage } from './pages/SetNewPasswordPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CasesPage } from './pages/CasesPage';
+import { CaseDetailPage } from './pages/CaseDetailPage';
 import { DocumentsPage } from './pages/DocumentsPage';
 import { SearchPage } from './pages/SearchPage';
 import { ApprovalsPage } from './pages/ApprovalsPage';
@@ -43,6 +44,7 @@ export const AppRoutes = () => {
       >
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/cases" element={<CasesPage />} />
+        <Route path="/cases/:caseId" element={<CaseDetailPage />} />
         <Route path="/documents" element={<DocumentsPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/approvals" element={<ApprovalsPage />} />

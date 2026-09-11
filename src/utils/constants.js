@@ -34,6 +34,9 @@ export const MOCK_USER = {
   status: 'Active'
 };
 
+// Step 12 — [PENDING] GET /api/metrics. The dashboard derives documents /
+// activeCases / pendingApprovals from live services; only totalUsers still
+// consumes this seeded value.
 export const MOCK_METRICS = {
   activeCases: 24,
   documents: 156,
@@ -154,6 +157,8 @@ export const MOCK_RECENT_ACTIVITY = [
 
 // ===== STEP 3 mock data: Cases & Approvals =====
 
+// Step 12 — [PENDING] GET /api/cases/stats. Static seed until the stats
+// endpoint is available from the backend.
 export const CASE_STATS = {
   total: 24,
   active: 16,
@@ -179,6 +184,9 @@ const EXTRA_CASE_TITLES = [
 
 const CASE_STATUSES = ['In Progress', 'Under Review', 'Pending', 'Archived'];
 
+// NOTE (Step 12): MOCK_CASES is currently unused — caseService maintains its
+// own INITIAL_CASE_DETAILS store. Kept as a reserved fixture for when the
+// /api/cases endpoint is wired and richer seed data is needed.
 export const MOCK_CASES = [
   ...BASE_CASES.map((c, i) => ({ id: `case-${i + 1}`, ...c })),
   ...Array.from({ length: 20 }, (_, i) => ({

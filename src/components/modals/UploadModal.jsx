@@ -5,14 +5,36 @@ import { Badge } from '../common/Badge';
 import { UploadCloud, CheckCircle2, AlertCircle } from 'lucide-react';
 import { documentService } from '../../services/documentService';
 import { SUPPORTED_UPLOAD } from '../../utils/constants';
+import { hasPermission, PERMISSIONS } from '../../utils/permissions';
+import { useAuth } from '../../hooks/useAuth';
 
 export const UploadModal = ({ isOpen, onClose, onUploaded }) => {
+  const { user } = useAuth();
+  const canUpload = hasPermission(user?.role, PERMISSIONS.UPLOAD_DOCUMENT);
+
   const [file, setFile] = useState(null);
   const [caseId, setCaseId] = useState('');
   const [docType, setDocType] = useState('PDF');
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  if (!canUpload) {
+    return (
+      <Modal isOpen={isOpen} onClose={onClose} title="Upload Restricted">
+        <div style={{ textAlign: 'center', padding: '24px 0' }}>
+          <AlertCircle size={48} color="#ef4444" style={{ margin: '0 auto 12px' }} />
+          <h4 style={{ color: '#fff', marginBottom: '6px' }}>Upload Not Authorized</h4>
+          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+            Your clearance level does not permit document uploads.
+          </p>
+          <Button variant="outline" onClick={onClose} style={{ marginTop: '16px' }}>
+            Close
+          </Button>
+        </div>
+      </Modal>
+    );
+  }
 
   const handleFileChange = (e) => {
     const selected = e.target.files && e.target.files[0];
@@ -57,6 +79,8 @@ export const UploadModal = ({ isOpen, onClose, onUploaded }) => {
       }, 1500);
     } catch (err) {
       console.error(err);
+      // Step 13 fix — surface the failure in the modal's existing error alert
+      setError(err.message || 'Upload failed. Please verify the file and try again.');
       setIsUploading(false);
     }
   };
