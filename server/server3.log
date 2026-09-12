@@ -1,0 +1,2 @@
+[server] Digilegal Vault API listening on port 3001
+[server] Health check: http://localhost:3001/api/health
