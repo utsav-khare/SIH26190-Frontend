@@ -132,6 +132,97 @@ export const documentService = {
       };
     }
     return api.get(`/documents/${id}/file`);
+  },
+
+  /* ----------------------------------------------------------------
+   * Iframe rendering support — returns raw bytes as a Blob so the
+   * viewer can wrap them in an opaque-origin blob: URL.
+   *   Mock: synthesizes a renderable PDF / SVG stub client-side.
+   *   Real: GET /api/documents/:id/file  (binary, via api.getBlob)
+   * ---------------------------------------------------------------- */
+  async getDocumentFile(id) {
+    if (USE_MOCK) {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      const doc = localDocuments.find((d) => d.id === id);
+      if (doc && doc.type === 'IMG') {
+        const svg = buildMockSvg(doc);
+        return { blob: new Blob([svg], { type: 'image/svg+xml' }), mime: 'image/svg+xml' };
+      }
+      const pdf = buildMockPdf(doc);
+      return { blob: new Blob([pdf], { type: 'application/pdf' }), mime: 'application/pdf' };
+    }
+    const { blob, mime } = await api.getBlob(`/documents/${id}/file`);
+    return { blob, mime };
   }
 };
+
+/* ---- mock byte builders (ASCII-only so blob encoding stays byte-exact) ---- */
+
+function escapePdfText(s) {
+  return String(s)
+    .replace(/[^\x20-\x7E]/g, '-')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
+}
+
+function buildMockPdf(doc) {
+  const lines = [
+    'Digilegal Vault - Secure Document Record',
+    'Document: ' + (doc?.name || 'Untitled'),
+    'Document ID: ' + (doc?.id || 'doc-?'),
+    'Case: ' + (doc?.caseId || 'CASE-?'),
+    'Status: ' + (doc?.status || 'Verified'),
+    'Accessed: ' + new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
+    '',
+    'System-generated preview rendered inside a sandboxed',
+    'viewer. Traceable to the authenticated session.',
+    'Unauthorized distribution is prohibited (SIH26190).'
+  ];
+  const content = lines
+    .map((line, i) => 'BT /F1 ' + (i === 0 ? 16 : 11) + ' Tf 56 ' + (780 - i * 26) + ' Td (' + escapePdfText(line) + ') Tj ET')
+    .join('\n');
+  const objects = {
+    1: '<< /Type /Catalog /Pages 2 0 R >>',
+    2: '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    3: '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>',
+    4: '<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream',
+    5: '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'
+  };
+  let pdf = '%PDF-1.4\n';
+  const offsets = {};
+  for (let i = 1; i <= 5; i++) {
+    offsets[i] = pdf.length;
+    pdf += i + ' 0 obj\n' + objects[i] + '\nendobj\n';
+  }
+  const xrefPos = pdf.length;
+  pdf += 'xref\n0 6\n0000000000 65535 f \n';
+  for (let i = 1; i <= 5; i++) {
+    pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+  }
+  pdf += 'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefPos + '\n%%EOF';
+  return pdf;
+}
+
+function escapeXmlText(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildMockSvg(doc) {
+  const name = escapeXmlText(doc?.name || 'Evidence Image');
+  const ref = escapeXmlText((doc?.caseId || 'case?') + ' / ' + (doc?.id || 'doc?'));
+  return (
+    '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420">' +
+    '<rect width="640" height="420" fill="#0b1525"/>' +
+    '<rect x="20" y="20" width="600" height="380" fill="none" stroke="#223864" stroke-dasharray="8 6"/>' +
+    '<text x="320" y="180" fill="#f5b726" font-family="monospace" font-size="20" text-anchor="middle">CLASSIFIED EVIDENCE</text>' +
+    '<text x="320" y="220" fill="#94a3b8" font-family="monospace" font-size="14" text-anchor="middle">' + name + '</text>' +
+    '<text x="320" y="260" fill="#64748b" font-family="monospace" font-size="12" text-anchor="middle">' + ref + '</text>' +
+    '</svg>'
+  );
+}
 

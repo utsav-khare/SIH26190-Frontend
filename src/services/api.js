@@ -118,6 +118,36 @@ class ApiClient {
   delete(endpoint, options) {
     return this.request(endpoint, { ...options, method: 'DELETE' });
   }
+
+  /**
+   * Binary fetch — returns { blob, mime } instead of parsed JSON.
+   * Used by the iframe document viewer (never exposes a direct file URL
+   * with the auth token; bytes are fetched with headers, then wrapped
+   * in an opaque-origin blob URL).
+   */
+  async getBlob(endpoint) {
+    const url = `${this.baseUrl}${endpoint}`;
+    try {
+      const response = await fetch(url, { method: 'GET', headers: this.getHeaders() });
+      if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem('vault_token');
+          localStorage.removeItem('vault_user');
+        }
+        const errorData = await response.json().catch(() => ({}));
+        const friendly = STATUS_MESSAGES[response.status];
+        throw new Error(errorData.message || friendly || `Request failed (HTTP ${response.status}).`);
+      }
+      const blob = await response.blob();
+      return { blob, mime: response.headers.get('Content-Type') || 'application/octet-stream' };
+    } catch (error) {
+      if (error instanceof TypeError) {
+        console.warn(`[API Network Error: ${endpoint}]`, error.message);
+        throw new Error('Network error. Unable to reach the vault server. Check your connection and try again.');
+      }
+      throw error;
+    }
+  }
 }
 
 export const api = new ApiClient(API_BASE_URL);

@@ -2,6 +2,9 @@ import React from 'react';
 import { Modal } from '../common/Modal';
 import { Badge } from '../common/Badge';
 import { Button } from '../common/Button';
+import { Watermark, buildWatermarkText } from '../common/Watermark';
+import { DocumentFrame } from '../common/DocumentFrame';
+import { useSecureView } from '../../hooks/useSecureView';
 import { Download, ShieldCheck, FileText, Calendar, User, Hash, AlertCircle } from 'lucide-react';
 import { documentService } from '../../services/documentService';
 import { useAuth } from '../../hooks/useAuth';
@@ -11,6 +14,10 @@ export const DocumentPreviewModal = ({ isOpen, onClose, document: doc }) => {
   const { user } = useAuth();
   const canView = hasPermission(user?.role, PERMISSIONS.VIEW_DOCUMENT);
   const canDownload = hasPermission(user?.role, PERMISSIONS.DOWNLOAD_DOCUMENT);
+  // Step 14 — interaction lockdown: right-click, double-click selection,
+  // copy/cut/drag and Ctrl+C/X/S/P/U are blocked while this secure viewer
+  // is open (released automatically on close).
+  useSecureView(Boolean(isOpen && canView));
 
   if (!doc) return null;
   if (!canView) {
@@ -42,9 +49,17 @@ export const DocumentPreviewModal = ({ isOpen, onClose, document: doc }) => {
     onClose();
   };
 
+  // Step 14 — CSS watermarking: every "Secure Document Inspection" view is
+  // identity-stamped with the viewer (name/email/role) + doc ref + access
+  // timestamp. Stabilize the access time per doc so re-renders don't churn it.
+  const accessedAt = React.useMemo(() => new Date(), [doc?.id]);
+  const wm = buildWatermarkText(user, doc, accessedAt);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Secure Document Inspection" maxWidth="640px">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', position: 'relative', userSelect: 'none' }}>
+        {/* CSS Watermark overlay — identity stamp above all content */}
+        <Watermark text={wm.primary} subText={wm.secondary} stampLabel="CONFIDENTIAL" />
         {/* Document Header Info */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '16px', background: '#0b1525', border: '1px solid #17273f', borderRadius: '8px' }}>
           <Badge variant={doc.type}>{doc.type}</Badge>
@@ -76,67 +91,9 @@ export const DocumentPreviewModal = ({ isOpen, onClose, document: doc }) => {
           </div>
         </div>
 
-        {/* Document Content Preview: image panel for IMG, text record for PDF */}
-        {doc.type === 'IMG' ? (
-          <div
-            style={{
-              padding: '18px',
-              background: '#060a12',
-              border: '1px solid #142033',
-              borderRadius: '6px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '10px',
-              minHeight: '160px',
-              justifyContent: 'center'
-            }}
-          >
-            <div style={{ color: '#f5b726', fontWeight: 'bold', fontSize: '0.8rem' }}>
-              [CLASSIFIED EVIDENCE IMAGE // SIH26190 DIGITAL VAULT]
-            </div>
-            <div
-              style={{
-                width: '100%',
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px dashed #223864',
-                borderRadius: '6px',
-                color: '#64748b',
-                fontSize: '0.8rem',
-                minHeight: '110px'
-              }}
-            >
-              Image preview: {doc.name} (decrypted render on backend integration)
-            </div>
-          </div>
-        ) : (
-          <div
-            style={{
-              padding: '18px',
-              background: '#060a12',
-              border: '1px solid #142033',
-              borderRadius: '6px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8rem',
-              color: '#94a3b8',
-              maxHeight: '180px',
-              overflowY: 'auto',
-              lineHeight: '1.6'
-            }}
-          >
-            <div style={{ color: '#f5b726', marginBottom: '8px', fontWeight: 'bold' }}>
-              [CLASSIFIED LEGAL RECORD // SIH26190 DIGITAL VAULT]
-            </div>
-            <div>--- BEGIN ENCRYPTED SUMMARY ---</div>
-            <div>Document ID: {doc.id}</div>
-            <div>Integrity Check: SHA-256 Verified (OK)</div>
-            <div>Summary: Official record deposited under chain-of-custody protocols for legal and judicial proceedings. Tamper-evident seals intact.</div>
-            <div>--- END RECORD PREVIEW ---</div>
-          </div>
-        )}
+        {/* Step 14 — Iframe rendering: real bytes in a sandboxed blob viewer,
+            identity-watermarked on top (replaces static placeholder panels) */}
+        <DocumentFrame doc={doc} />
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #17273f', paddingTop: '16px' }}>

@@ -1,10 +1,16 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 const port = process.env.SERVER_PORT || 3001;
 
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 const authRoutes = await import('./routes/authRoutes.js');
 const staffRoutes = await import('./routes/staffRoutes.js');

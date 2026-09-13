@@ -7,6 +7,7 @@ import {
   getBsaCertificate,
   getAuditLogs,
   verifyDocumentIntegrity,
+  getDocumentFile,
   searchDocuments,
 } from '../controllers/documentController.js';
 import upload from '../middlewares/uploadMiddleware.js';
@@ -27,5 +28,6 @@ router.post('/:documentId/retry-redaction', retryRedaction);
 router.get('/:documentId/certificate', getBsaCertificate);
 router.get('/:documentId/audit-logs', getAuditLogs);
 router.get('/:documentId/verify', verifyDocumentIntegrity);
+router.get('/:documentId/file', getDocumentFile);
 
 export default router;
